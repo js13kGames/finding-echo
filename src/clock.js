@@ -18,12 +18,9 @@ export default {
   /**
    * The number of milliseconds for each frame should be based on
    * the fps
-   * @protected
    * @type Number
    */
-  millisecondsPerFrame: {
-    get: () => millisecondsPerFrame
-  },
+  millisecondsPerFrame: millisecondsPerFrame,
 
   /**
    * The number of milliseconds for each frame should be based on
@@ -47,17 +44,18 @@ export default {
   /**
    * Whether the game is currently running or not, used to actually
    * stop the loop.
-   * @readonly
    * @type Boolean
    */
   isRunning: false,
 
   /**
    * The ID of the animation frame, returned from requestAnimationFrame.
-   * @readonly
    * @type Number
    */
   requestId: 0,
+
+  _onConstantlyRunners: [],
+  _onEveryFrameRunners: [],
 
   /**
    * Moves the game forward by one tick. Will call update continually if
@@ -72,10 +70,10 @@ export default {
     this.lag += elapsed;
 
     while (this.lag >= millisecondsPerFrame) {
-      this.update();
+      this._runConstantly();
       this.lag -= millisecondsPerFrame;
     }
-    this.draw(this.lag / millisecondsPerFrame);
+    this._runEveryFrame(this.lag / millisecondsPerFrame);
     this.frame++;
   },
 
@@ -121,5 +119,33 @@ export default {
     if (this.frame > 100) {
       this.stop();
     }
+  },
+
+  _runConstantly: () => {
+    this.onConstantlyRunners.forEach(runner => {
+      runner();
+    });
+  },
+
+  /**
+   * Run some function constantly in the loop
+   * @type Function
+   */
+  onConstantly: (runner) => {
+    this.onConstantlyRunners.push(runner);
+  },
+
+  _runEveryFrame: (offset) => {
+    this.onEveryFrameRunners.forEach(runner => {
+      runner(offset);
+    });
+  },
+
+  /**
+   * Run some function every 60 fps animation frame
+   * @type Function
+   */
+  onEveryFrame: (runner) => {
+    this.onEveryFrameRunners.push(runner);
   }
 };
