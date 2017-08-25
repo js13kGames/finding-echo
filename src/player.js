@@ -1,10 +1,14 @@
 
+import EventEmitter from 'event-emitter-es6';
 import Vector from './vector';
 
-class Player {
+class Player extends EventEmitter {
   constructor(x, y) {
+    super();
     this.x = x;
     this.y = y;
+    this.w = 4;
+    this.h = 3;
     this.movement = new Vector(0, 0);
   }
 

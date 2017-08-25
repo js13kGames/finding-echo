@@ -5,7 +5,7 @@
   "author": "Marco <msegreto@miceover.com>",
   "license": "MIT",
   "scripts": {
-    "build": "npm run build:js && npm run compile && npm run build:html",
+    "build": "npm run clean && npm run build:js && npm run compile && npm run build:html",
     "build:js": "webpack",
     "build:html": "inline-assets dist/index.min.html > dist/index.html",
     "clean": "rm -rf dist/*",
@@ -16,13 +16,16 @@
     "start": "http-server ./dist -g",
     "test": "[[ $(find ./dist/index.html.gz -type f -size +13000c 2>/dev/null) ]] && echo 'File too large' && exit 1 || exit 0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "event-emitter-es6": "^1.1.5"
+  },
   "devDependencies": {
     "babel": "^6.23.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.0",
     "babel-preset-latest": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
     "gzip-all": "^1.0.0",
     "html-minifier": "^3.5.3",
     "http-server": "^0.10.0",
