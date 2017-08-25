@@ -1,20 +1,24 @@
 
-export default {
-  entities: [],
+const entities = [];
 
+export default {
   addEntity(entity) {
-    this.entities.push(entity);
+    entities.push(entity);
   },
 
   update() {
-    this.entities.forEach(entity => {
-      entity.update();
+    entities.forEach(entity => {
+      if (entity.update) {
+        entity.update();
+      }
     });
-  }
+  },
 
-  render() {
-    this.entities.forEach(entity => {
-      entity.render();
+  render(offset) {
+    entities.forEach(entity => {
+      if (entity.render) {
+        entity.render();
+      }
     });
   }
 }
