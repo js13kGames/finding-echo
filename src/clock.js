@@ -1,63 +1,80 @@
 
 /**
- * Local private frames per second
- * @type Number
- * @private
+ * @file looping Holds the Looping module
  */
+
+
 const FPS = 60;
+const MILLISECONDSPERFRAME = 1000 / FPS;
 
-/**
- * Local private miliseconds per frame
- * @type Number
- * @private
- */
-const millisecondsPerFrame = 1000 / FPS;
+export default {
 
-class Clock {
-  constructor() {
-    /**
-     * The number of milliseconds for each frame should be based on
-     * the fps
-     * @type Number
-     */
-    this.millisecondsPerFrame =  millisecondsPerFrame;
+  _constantlyListeners: [],
+  _everyFrameListeners: [],
+  _fps: FPS,
+  _isRunning: false,
+  _millisecondsPerFrame: MILLISECONDSPERFRAME,
+  _requestId: 0,
+  _frameStop: 0,
 
-    /**
-     * The number of milliseconds for each frame should be based on
-     * the fps
-     * @type Date
-     */
-    this.previousTime = 0;
+  /**
+   * The number of milliseconds for each frame should be based on
+   * the fps
+   * @type Date
+   */
+  previousTime: 0,
 
-    /**
-     * The lag since the last loop completion, used to determine whether
-     * to update more until the next draw.
-     * @type Boolean
-     */
-    this.lag = 0;
+  /**
+   * The lag since the last loop completion, used to determine whether
+   * to update more until the next draw.
+   * @type Boolean
+   */
+  lag: 0,
 
-    /**
-     * The total frames run since the first call.
-     * @type Number
-     */
-    this.frame = 0;
-    /**
-     * Whether the game is currently running or not, used to actually
-     * stop the loop.
-     * @type Boolean
-     */
-    this.isRunning = false;
+  /**
+   * The total frames run since the first call.
+   * @type Number
+   */
+  frame: 0,
 
-    /**
-     * The ID of the animation frame, returned from requestAnimationFrame.
-     * @type Number
-     */
-    this.requestId = 0;
+  /**
+   * The frames per second the game should run at defaults to 60
+   * @default 60
+   * @type Number
+   */
+  get fps() { return this._fps; },
+  set fps(amount) {
+    this._fps = amount;
+    this._millisecondsPerFrame = 1000 / this._fps;
+  },
 
-    this._onConstantlyRunners = [];
-    this._onEveryFrameRunners = [];
-  }
+  /**
+   * The number of milliseconds for each frame should be based on
+   * the fps
+   * @protected
+   * @type Number
+   */
+  get millisecondsPerFrame() {
+    return this._millisecondsPerFrame;
+  },
 
+
+  /**
+   * Whether the game is currently running or not, used to actually
+   * stop the loop.
+   * @readonly
+   * @type Boolean
+   */
+  get isRunning() {
+    return this._isRunning;
+  },
+
+  /**
+   * The ID of the animation frame, returned from requestAnimationFrame.
+   * @readonly
+   * @type Number
+   */
+  get requestId() { return this._requestId; },
 
   /**
    * Moves the game forward by one tick. Will call update continually if
@@ -65,29 +82,28 @@ class Clock {
    * at the end of every loop and will update total frames.
    */
   tick() {
-    const currentTime = (new Date()).getTime();
-    const elapsed = currentTime - this.previousTime;
+    const currentTime = window.performance.now();
 
+    const elapsed = currentTime - this.previousTime;
     this.previousTime = currentTime;
     this.lag += elapsed;
 
-    while (this.lag >= millisecondsPerFrame) {
-      this._runConstantly();
-      this.lag -= millisecondsPerFrame;
+    while (this.lag >= this._millisecondsPerFrame) {
+      // let beforeUpdate = window.performance.now()
+      this._constantly(this.lag / this._millisecondsPerFrame);
+      // let afterUpdate = window.performance.now();
+      // this.lag -= afterUpdate - beforeUpdate;
+      this.lag -= this.millisecondsPerFrame;
     }
-    this._runEveryFrame(this.lag / millisecondsPerFrame);
+    this._constantly(this.lag / this._millisecondsPerFrame);
+    this._everyFrame(this.lag / this._millisecondsPerFrame);
+    this.updateTimers(this.lag / this._millisecondsPerFrame);
     this.frame++;
-  }
-
-  /**
-   * Runs the game if not already running, runs the loop with launchLoop.
-   */
-  run() {
-    if (!this.isRunning) {
-      this.launchLoop();
-      this.isRunning = true;
+    if (this._frameStop === this.frame) {
+      this._isRunning = false;
+      this._onFrameStop();
     }
-  }
+  },
 
   /**
    * Creates a loop that runs tick by request animation frames. Will
@@ -95,62 +111,95 @@ class Clock {
    * Initializes previousTime and lag.
    */
   launchLoop() {
-    this.previousTime = (new Date()).getTime();
+    this.previousTime = window.performance.now();
     this.lag = 0;
 
     const runner = () => {
       this.tick();
-      if (this.isRunning) {
-        this.requestId = requestAnimationFrame(runner);
+      if (this._isRunning) {
+        this._requestId = requestAnimationFrame(runner);
       }
     };
     runner();
-  }
+  },
 
   /**
-   * Stops the game by changing the isRunning variable.
+   * Update all the variable time timers.
+   */
+  updateTimers() {
+
+  },
+
+  /**
+   * Run a function on every frame. This means it syncs with current fps.
+   * @param {Function} cb The function to call.
+   *
+   * callback function with pass the following params:
+   *   - dtTime: The current time delta.
+   */
+  onEveryFrame(cb) {
+    this._everyFrameListeners = this._everyFrameListeners || [];
+    this._everyFrameListeners.push(cb);
+  },
+
+  /**
+   * Run a function as constantly as possible, either on every frame, or if
+   * there's missed frames due to log, run every step.
+   * @param {Function} cb The function to call.
+   *
+   * callback function with pass the following params:
+   *   - dtTime: The current time delta.
+   */
+  onConstantly(cb) {
+    this._constantlyListeners = this._constantlyListeners || [];
+    this._constantlyListeners.push(cb);
+  },
+
+  /**
+   * Runs the game if not already running, sets the game to running.
+   */
+  start() {
+    if (!this._isRunning) {
+      this._isRunning = true;
+      this.launchLoop();
+    }
+  },
+
+  /**
+   * Stops the game by setting it to not running.
    */
   stop() {
-    this.isRunning = false;
-  }
+    this._isRunning = false;
+  },
 
-  /**
-   * Update function should be overwritten
-   */
-  update() {
-    if (this.frame > 100) {
-      this.stop();
+  onEveryMilli(millis, cb) {
+    throw new Error('Not implemented');
+  },
+
+  onEverySecs(secs, cb) {
+    throw new Error('Not implemented');
+  },
+
+  onEveryMins(mins, cb) {
+    throw new Error('Not implemented');
+  },
+
+  _stopOnFrame(frameNumber, cb) {
+    this._frameStop = frameNumber;
+    this._onFrameStop = cb;
+  },
+
+  _everyFrame(dtMilli) {
+    this._callListeners(this._everyFrameListeners, dtMilli);
+  },
+
+  _constantly(dtMilli) {
+    this._callListeners(this._constantlyListeners, dtMilli);
+  },
+
+  _callListeners(listeners, dtMilli) {
+    for (const listener of listeners) {
+      listener(dtMilli);
     }
   }
-
-  _runConstantly() {
-    this._onConstantlyRunners.forEach(runner => {
-      runner();
-    });
-  }
-
-  /**
-   * Run some function constantly in the loop
-   * @type Function
-   */
-  onConstantly(runner) {
-    console.log('this', this);
-    this._onConstantlyRunners.push(runner);
-  }
-
-  _runEveryFrame(offset) {
-    this._onEveryFrameRunners.forEach(runner => {
-      runner(offset);
-    });
-  }
-
-  /**
-   * Run some function every 60 fps animation frame
-   * @type Function
-   */
-  onEveryFrame(runner) {
-    this._onEveryFrameRunners.push(runner);
-  }
 };
-
-export default new Clock();
