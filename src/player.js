@@ -10,6 +10,8 @@ class Player extends EventEmitter {
     this.w = 4;
     this.h = 3;
     this.movement = new Vector(0, 0);
+
+    this.on('collision', this.onCollision.bind(this));
   }
 
   move(x, y) {
@@ -19,6 +21,12 @@ class Player extends EventEmitter {
   update() {
     if (this.movement.x > 0) this.x += this.movement.x;
     if (this.movement.y > 0) this.y += this.movement.y;
+  }
+
+  onCollision() {
+    this.movement = new Vector(0, 0);
+    this.x -= 1;
+    this.y -= 1;
   }
 }
 

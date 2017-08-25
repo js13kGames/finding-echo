@@ -20,5 +20,9 @@ export default {
         entity.render();
       }
     });
+  },
+
+  get entities() {
+    return entities;
   }
-}
+};
