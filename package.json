@@ -18,8 +18,7 @@
     "test": "[[ $(find ./dist/index.html.gz -type f -size +13000c 2>/dev/null) ]] && echo 'File too large' && exit 1 || exit 0"
   },
   "dependencies": {
-    "event-emitter-es6": "^1.1.5",
-    "uglify-js": "^3.0.28"
+    "event-emitter-es6": "^1.1.5"
   },
   "devDependencies": {
     "babel": "^6.23.0",
