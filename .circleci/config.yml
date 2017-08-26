@@ -40,7 +40,7 @@ jobs:
       - run:
           name: Creating file size artifacts
           command: |
-            ls -l --block-size=M ./dist > /tmp/sizes;
+            ls -l --block-size=K ./dist > /tmp/sizes;
 
       - store_artifacts:
           path: /tmp/sizes
