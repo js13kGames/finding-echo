@@ -12,7 +12,13 @@ module.exports = {
         test: /\.js$/,
         loader: 'babel-loader',
         query: {
-          presets: ['latest']
+          presets: [
+            ['env', {
+              targets: {
+                browsers: ['last 2 Chrome versions', 'last 2 Firefox versions']
+              }
+            }]
+          ]
         }
       }
     ]
