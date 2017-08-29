@@ -7,11 +7,10 @@ import Wall from './wall';
 
 
 const player = new Player(8, 8);
-player.move(1, 0);
-const tW = new Wall(0, 0, 80, 2);
-const rW = new Wall(80, 0, 2, 80);
-const lW = new Wall(0, 0, 2, 80);
-const bW = new Wall(0, 80, 80, 2);
+const tW = new Wall(0, 0, 180, 2);
+const rW = new Wall(180, 0, 2, 180);
+const lW = new Wall(0, 0, 2, 180);
+const bW = new Wall(0, 180, 180, 2);
 
 
 manager.addEntity(tW);
@@ -23,7 +22,6 @@ manager.addEntity(player);
 const collisionManager = new Collisions(manager.entities);
 
 function debugPlayer() {
-  console.log('update player', player.x, player.y);
 }
 
 Clock.onConstantly(manager.update);
