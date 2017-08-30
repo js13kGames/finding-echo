@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "event-emitter-es6": "^1.1.5",
+    "jsfxr": "^0.0.1",
     "uglify-es": "^3.0.28"
   },
   "devDependencies": {

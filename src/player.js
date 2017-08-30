@@ -1,9 +1,17 @@
 
+import jsfxr from 'jsfxr';
+
 import EventEmitter from 'event-emitter-es6';
 import KeyboardInit from './keyboard';
 import Vector from './vector';
 
 const KEM = KeyboardInit(window);
+
+const sfxDolphin = [2,,0.1199,0.28,0.2837,0.68,0.05,,-0.92,0.8,0.4499,-0.4399,,,,0.6,-0.1599,-0.62,0.28,-0.5799,0.1,0.2399,-0.3799,0.5]
+const soundURL = jsfxr(sfxDolphin);
+
+const audio = new Audio();
+audio.src = soundURL;
 
 class Player extends EventEmitter {
   constructor(x, y) {
@@ -21,6 +29,7 @@ class Player extends EventEmitter {
   }
 
   move(x, y) {
+    audio.play();
     this.movement = new Vector(x, y);
     console.log('movement', this.movement);
   }
