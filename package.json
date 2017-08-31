@@ -10,7 +10,7 @@
     "build:html": "inline-assets dist/index.min.html > dist/index.html",
     "clean": "rm -rf dist/*",
     "compile": "npm run compile:js && npm run compile:css && npm run compile:html",
-    "compile:js": "./node_modules/uglify-es/bin/uglifyjs --compress -o dist/index.min.js -- dist/index.js",
+    "compile:js": "cp dist/index.js dist/index.min.js",
     "compile:css": "uglifycss src/style.css > dist/style.css",
     "compile:html": "html-minifier --minify-js 0 src/index.html > dist/index.min.html",
     "gzip": "gzip-all dist/*",

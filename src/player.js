@@ -28,8 +28,6 @@ panNode.refDistance = 20;
 
 source.connect(panNode);
 panNode.connect(audioCtx.destination);
-console.log(source);
-source.mediaElement.play();
 
 audioCtx.listener.setPosition(0, 0, 0);
 panNode.setPosition(40, 40, -0.5);
@@ -43,6 +41,7 @@ class Player extends EventEmitter {
     this.h = 3;
     this.movement = new Vector(0, 0);
     this.angle = (this.w > this.h) ? 0 : 90;
+    this.isCollidable = true;
 
     this.onKey = this.onKey.bind(this);
     this.on('collision', this.onCollision.bind(this));
@@ -51,7 +50,6 @@ class Player extends EventEmitter {
   }
 
   onKey(keyData) {
-    console.log('on key', keyData);
     switch (keyData['keyName']) {
       case 'w':
         this.move(0, 0.25);
@@ -73,7 +71,7 @@ class Player extends EventEmitter {
 
   move(x, y) {
     this.movement = new Vector(x, y);
-    console.log('movement', this.x, this.y);
+    console.log('movement', x, y);
   }
 
   rotate(angle) {
@@ -81,19 +79,19 @@ class Player extends EventEmitter {
   }
 
   update() {
-    if (this.movement.x > 0) this.x += this.movement.x;
-    if (this.movement.y > 0) this.y += this.movement.y;
+    if (this.movement.x !== 0) this.x += this.movement.x;
+    if (this.movement.y !== 0) this.y += this.movement.y;
     panNode.setPosition(this.x / 10, this.y / 10, -0.5);
   }
 
   onCollision(entityB) {
-    console.log('collision', entityB);
     this.movement = new Vector(0, 0);
     if (entityB.orientation === 'h') {
-      this.y -= 20;
+      this.y -= 10;
     } else {
-      this.x -= 20;
+      this.x -= 10;
     }
+    console.log('collision', this.x, this.y);
   }
 }
 

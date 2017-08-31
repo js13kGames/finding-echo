@@ -10,8 +10,12 @@ class Collisions {
       this.entities.forEach((entityB) => {
         if (entityA !== entityB) {
           if (this.detectRectangles(entityA, entityB)) {
-            entityA.emit && entityA.emit('collision', entityB);
-            entityB.emit && entityB.emit('collision', entityA);
+            if (entityA.isCollidable) {
+              entityA.emitSync('collision', entityB);
+            }
+            if (entityB.isCollidable) {
+              entityB.emitSync('collision', entityA);
+            }
           }
         }
       });
