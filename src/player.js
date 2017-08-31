@@ -40,7 +40,7 @@ class Player extends EventEmitter {
     this.w = 4;
     this.h = 3;
     this.movement = new Vector(0, 0);
-    this.angle = (this.w > this.h) ? 0 : 90;
+    this.angle = 0;
     this.isCollidable = true;
 
     this.onKey = this.onKey.bind(this);
@@ -52,16 +52,16 @@ class Player extends EventEmitter {
   onKey(keyData) {
     switch (keyData['keyName']) {
       case 'w':
-        this.move(0, 0.25);
+        this.orientMove(0.25);
         break;
       case 'd':
-        this.move(0.25, 0);
+        this.rotate(90);
         break;
       case 's':
-        this.move(0, -0.25);
+        this.orientMove(-0.25);
         break;
       case 'a':
-        this.move(-0.25, 0);
+        this.rotate(-90);
         break;
 
       default:
@@ -70,12 +70,32 @@ class Player extends EventEmitter {
   }
 
   move(x, y) {
-    this.movement = new Vector(x, y);
-    console.log('movement', x, y);
+    this.movement.x += x;
+    this.movement.y += y;
+    console.log('movement', x, y, this.angle);
+    console.log(this.x, this.y);
+  }
+
+  orientMove(force) {
+    if (this.angle === 90) {
+      this.move(force, 0);
+    } else if (this.angle === 270) {
+      this.move(-force, 0);
+    } else if (this.angle === 180) {
+      this.move(0, -force);
+    } else if (this.angle === 0) {
+      this.move(0, force);
+    }
   }
 
   rotate(angle) {
-    this.angle = angle;
+    this.angle += angle;
+    this.angle = this.angle % 360;
+
+    if (this.angle < 0){
+      this.angle += 360;
+    }
+    console.log('rotate', this.angle);
   }
 
   update() {

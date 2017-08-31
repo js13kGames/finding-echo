@@ -22,7 +22,7 @@ manager.addEntity(player);
 const collisionManager = new Collisions(manager.entities);
 
 function debugPlayer() {
-  console.log('update', player.x, player.y);
+  console.log(player.x, player.y);
 }
 
 Clock.onConstantly(manager.update);
