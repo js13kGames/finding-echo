@@ -7,13 +7,19 @@ class Wall {
     this.y = y;
     this.w = w;
     this.h = h;
-    this.points = [
-      new Vector(x, y),
-      new Vector(x + w, y),
-      new Vector(x, y + h),
-      new Vector(x + w, y + h)
-    ];
     this.orientation = (w > h) ? 'h' : 'v';
+    this.isWall = true;
+    if (this.orientation === 'h') {
+      this.points = [
+        new Vector(x, y),
+        new Vector(x + w, y)
+      ];
+    } else {
+      this.points = [
+        new Vector(x, y),
+        new Vector(x, y + h)
+      ];
+    }
   }
 }
 

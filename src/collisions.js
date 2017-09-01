@@ -1,6 +1,8 @@
 
+import KeyboardInit from './keyboard';
 import Vector from './vector';
 
+const KEM = KeyboardInit(window);
 
 function intersectsWith(eA, eB) {
   const a = eA.points[0];
@@ -45,9 +47,16 @@ function getIntersectionPoint(eA, eB) {
 
   return new Vector(intersectionX, intersectionY);
 }
+
 class Collisions {
   constructor(entities) {
     this.entities = entities;
+    KEM.on('KEYDOWN', (ev) => {
+      console.log('in collisons handler');
+      if (ev.data.keyName === 't') {
+        this.checkRayCasting(40, 90);
+      }
+    });
   }
 
   checkCollisions() {
@@ -78,39 +87,45 @@ class Collisions {
   }
 
   checkRayCasting(cX, cY) {
+    const hitpoints = [];
+    const walls = this.entities.filter((entity) => entity.isWall);
+    console.log('walls', walls);
     // TODO bad naming, differeniate wall
-    this.entities.forEach((wall) => {
-      if (wall.isWall) {
-        wall.points.forEach((point, jdx) => {
-          let closestPoint;
-          if (jdx === 0) closestPoint = wall.points[0];
-          if (jdx === 1) closestPoint = wall.points[1];
-          const ray = { points: [
-            new Vector(cX, cY),
-            new Vector(closestPoint.x, closestPoint.y)] };
-          let minDistance = Math.sqrt(Math.pow(ray.p2.x - ray.p1.x, 2) +
-            Math.pow(ray.p2.y - ray.p1.y, 2));
+    walls.forEach((wall) => {
+      wall.points.forEach((point, jdx) => {
+        let closestPoint;
+        console.log('closetPoint Wall', wall);
+        if (jdx === 0) closestPoint = wall.points[0];
+        if (jdx === 1) closestPoint = wall.points[1];
+        console.log('closestPoint', closestPoint);
+        const ray = { points: [
+          new Vector(cX, cY),
+          new Vector(closestPoint.x, closestPoint.y)] };
+        let minDistance = Math.sqrt(Math.pow(ray.points[1].x - ray.points[0].x, 2) +
+          Math.pow(ray.points[1].y - ray.points[0].y, 2));
 
-          this.entities.forEach((wallK) => {
-            if (wall !== wallK) {
-              if (intersectsWith(wallK, ray)) {
-                const intersectionPoint = getIntersectionPoint(wallK, ray);
-                const tempRay = {
-                  points: [new Vector(cX, cY),
-                    new Vector(intersectionPoint.x, intersectionPoint.y)]
-                };
-                const tempRayLength = Math.sqrt(Math.pow(tempRay.p2.x - tempRay.p1.x, 2) +
-                  Math.pow(tempRay.p2.y - tempRay.p1.y, 2));
-                if (tempRayLength < minDistance) {
-                  closestPoint = intersectionPoint;
-                  minDistance = tempRayLength;
-                }
+        walls.forEach((wallK) => {
+          if (wall !== wallK) {
+            if (intersectsWith(wallK, ray)) {
+              const intersectionPoint = getIntersectionPoint(wallK, ray);
+              const tempRay = {
+                points: [new Vector(cX, cY),
+                  new Vector(intersectionPoint.x, intersectionPoint.y)]
+              };
+              const tempRayLength = Math.sqrt(Math.pow(tempRay.points[1].x -
+                tempRay.points[0].x, 2) +
+                Math.pow(tempRay.points[1].y - tempRay.points[0].y, 2));
+              if (tempRayLength < minDistance) {
+                closestPoint = intersectionPoint;
+                minDistance = tempRayLength;
               }
             }
-          });
+          }
         });
-      }
+        hitpoints.push(closestPoint);
+      });
     });
+    console.log('shiz', hitpoints);
   }
 }
 
