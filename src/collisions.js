@@ -1,5 +1,50 @@
 
+import Vector from './vector';
 
+
+function intersectsWith(eA, eB) {
+  const a = eA.points[0];
+  const b = eA.points[1];
+  const c = eB.points[0];
+  const d = eB.points[1];
+  const cmp = new Vector(c.x - a.x, c.y - a.y);
+  const r = new Vector(b.x - a.x, b.y - a.y);
+  const s = new Vector(d.x - c.x, d.y - c.y);
+
+  const cmpxr = cmp.x * r.y - cmp.y * r.x;
+  const cmpxs = cmp.x * s.y - cmp.y * s.x;
+  const rxs = r.x * s.y - r.y * s.x;
+  if (cmpxr === 0) {
+    return ((c.x - a.x < 0) !== (c.x - b.x < 0)) ||
+           ((c.y - a.y < 0) !== (c.y - b.y < 0));
+  }
+  if (rxs === 0) {
+    return false;
+  }
+
+  const rxsr = 1 / rxs;
+  const t = cmpxs * rxsr;
+  const u = cmpxr * rxsr;
+  return (t >= 0) && (t <= 1) && (u >= 0) && (u <= 1);
+}
+
+function getIntersectionPoint(eA, eB) {
+  const a = eA.points[0];
+  const b = eB.points[1];
+  const c = eB.points[0];
+  const d = eB.points[1];
+
+  const divider = ((a.x - b.x) * (c.y - d.y) - (a.y - b.y) * (c.x - d.x));
+  if (divider === 0) {
+    return new Vector(0, 0);
+  }
+  const intersectionX = ((a.x * b.y - a.y * b.x) * (c.x - d.x) - (a.x - b.x) *
+    (c.x * d.y - c.y * d.x)) / divider;
+  const intersectionY = ((a.x * b.y - a.y * b.x) * (c.y - d.y) - (a.y - b.y) *
+    (c.x * d.y - c.y * d.x)) / divider;
+
+  return new Vector(intersectionX, intersectionY);
+}
 class Collisions {
   constructor(entities) {
     this.entities = entities;
@@ -31,6 +76,43 @@ class Collisions {
     }
     return false;
   }
+
+  checkRayCasting(cX, cY) {
+    // TODO bad naming, differeniate wall
+    this.entities.forEach((wall) => {
+      if (wall.isWall) {
+        wall.points.forEach((point, jdx) => {
+          let closestPoint;
+          if (jdx === 0) closestPoint = wall.points[0];
+          if (jdx === 1) closestPoint = wall.points[1];
+          const ray = { points: [
+            new Vector(cX, cY),
+            new Vector(closestPoint.x, closestPoint.y)] };
+          let minDistance = Math.sqrt(Math.pow(ray.p2.x - ray.p1.x, 2) +
+            Math.pow(ray.p2.y - ray.p1.y, 2));
+
+          this.entities.forEach((wallK) => {
+            if (wall !== wallK) {
+              if (intersectsWith(wallK, ray)) {
+                const intersectionPoint = getIntersectionPoint(wallK, ray);
+                const tempRay = {
+                  points: [new Vector(cX, cY),
+                    new Vector(intersectionPoint.x, intersectionPoint.y)]
+                };
+                const tempRayLength = Math.sqrt(Math.pow(tempRay.p2.x - tempRay.p1.x, 2) +
+                  Math.pow(tempRay.p2.y - tempRay.p1.y, 2));
+                if (tempRayLength < minDistance) {
+                  closestPoint = intersectionPoint;
+                  minDistance = tempRayLength;
+                }
+              }
+            }
+          });
+        });
+      }
+    });
+  }
 }
+
 
 export default Collisions;
