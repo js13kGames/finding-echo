@@ -52,9 +52,9 @@ class Collisions {
   constructor(entities) {
     this.entities = entities;
     KEM.on('KEYDOWN', (ev) => {
-      console.log('in collisons handler');
       if (ev.data.keyName === 't') {
-        this.checkRayCasting(40, 90);
+        const closestWalls = this.checkRayCasting(40, 90);
+        console.log(this.findFacingWall(closestWalls, 40, 90, 180));
       }
     });
   }
@@ -88,16 +88,20 @@ class Collisions {
 
   checkRayCasting(cX, cY) {
     const hitpoints = [];
+    const wallPoints = [];
     const walls = this.entities.filter((entity) => entity.isWall);
-    console.log('walls', walls);
     // TODO bad naming, differeniate wall
     walls.forEach((wall) => {
+      let closestWall;
       wall.points.forEach((point, jdx) => {
         let closestPoint;
-        console.log('closetPoint Wall', wall);
-        if (jdx === 0) closestPoint = wall.points[0];
-        if (jdx === 1) closestPoint = wall.points[1];
-        console.log('closestPoint', closestPoint);
+        if (jdx === 0) {
+          closestPoint = wall.points[0];
+        }
+        if (jdx === 1) {
+          closestPoint = wall.points[1];
+        }
+        closestWall = wall;
         const ray = { points: [
           new Vector(cX, cY),
           new Vector(closestPoint.x, closestPoint.y)] };
@@ -118,14 +122,34 @@ class Collisions {
               if (tempRayLength < minDistance) {
                 closestPoint = intersectionPoint;
                 minDistance = tempRayLength;
+                closestWall = wallK;
               }
             }
           }
         });
         hitpoints.push(closestPoint);
       });
+      wallPoints.push(closestWall);
     });
-    console.log('shiz', hitpoints);
+    return wallPoints;
+  }
+
+  findFacingWall(walls, cX, cY, angle) {
+    let closestWall;
+    if (angle === 0) {
+      closestWall = walls.find((wall) => wall.orientation === 'h' && wall.y <= cY);
+    }
+    if (angle === 90) {
+      closestWall = walls.find((wall) => wall.orientation === 'v' && wall.x >= cX);
+    }
+    if (angle === 180) {
+      closestWall = walls.find((wall) => wall.orientation === 'h' && wall.y >= cY);
+    }
+    if (angle === 240) {
+      closestWall = walls.find((wall) => wall.orientation === 'v' && wall.y <= cX);
+    }
+
+    return closestWall;
   }
 }
 
