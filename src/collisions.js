@@ -85,12 +85,10 @@ class Collisions {
   }
 
   checkEcho() {
-    console.log('collision : on echo');
     const player = this.entities.find((entity) => entity.isPlayer);
     const walls = this.checkRayCasting(player.x, player.y);
     const wall = this.findFacingWall(walls, player.x, player.y, player.angle);
     if (wall) {
-      console.log('collision : echo found');
       const distance = this.distanceFromCenter(player, wall);
       player.emitSync('ECHO_FOUND', { data: { wall, distance } });
     }

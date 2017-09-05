@@ -54,10 +54,12 @@ class Player extends EventEmitter {
     this.isPlayer = true;
 
     this.onKey = this.onKey.bind(this);
+    this.onKeyUp = this.onKeyUp.bind(this);
     this.onEchoFound = this.onEchoFound.bind(this);
     this.on('collision', this.onCollision.bind(this));
     // TODO Figure out way to not have this dep
     Dispatcher.on('KEYDOWN', (ev) => this.onKey(ev.data));
+    Dispatcher.on('KEYUP', (ev) => this.onKeyUp(ev.data));
     this.on('ECHO_FOUND', (ev) => this.onEchoFound(ev.data));
   }
 
@@ -87,6 +89,20 @@ class Player extends EventEmitter {
     }
   }
 
+  onKeyUp(keyData) {
+    switch (keyData['keyName']) {
+      case 'w':
+        this.stopMove()
+        break;
+      case 's':
+        this.stopMove()
+        break;
+
+      default:
+        break;
+    }
+  }
+
   onEchoFound(data) {
     this.timer = setTimeout(() => {
       gainNode.gain.value = 0.2;
@@ -96,10 +112,15 @@ class Player extends EventEmitter {
   }
 
   move(x, y) {
-    this.movement.x += x;
-    this.movement.y += y;
+    this.movement.x = x;
+    this.movement.y = y;
     console.log('movement', x, y, this.angle);
-    console.log(this.x, this.y);
+    console.log('movement', this.x, this.y);
+  }
+
+  stopMove() {
+    this.movement.x = 0;
+    this.movement.y = 0;
   }
 
   orientMove(force) {

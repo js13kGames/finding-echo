@@ -11,8 +11,17 @@ function init(container) {
       return;
     }
 
-    console.log(`KEY-${keyName}`);
     Dispatcher.emit('KEYDOWN', { data: { keyName } });
+  }, false);
+
+  container.addEventListener('keyup', (event) => {
+    const keyName = event.key;
+
+    if (keyName === 'Control') {
+      return;
+    }
+
+    Dispatcher.emit('KEYUP', { data: { keyName } });
   }, false);
 }
 
