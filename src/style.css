@@ -1,12 +1,16 @@
 
 body {
-  background: #09101b;
+  background: #0c1940; /* Old browsers */
+  background: -webkit-radial-gradient(center, ellipse cover, #0c1940 0%,#08011b 100%);
+  background: radial-gradient(ellipse at center, #0c1940 0%,#08011b 100%);
+  position: relative;
 }
 
 .main {
   margin: 10rem auto;
   max-width: 800px;
   position: relative;
+  top: calc(50vh - 200px);
 }
 
 .player {
@@ -14,19 +18,23 @@ body {
   background-size: 14rem;
   background-repeat: no-repeat;
   height: 7rem;
+  left: calc(50% - 2rem);
+  position: absolute;
+  top: calc(50% - 3.5rem);
   transform: rotate(0deg);
   width: 4rem;
 }
 
 .bubble {
   background: #155ba9;
+  border: 2px solid #89a4c3;
   border-radius: 200px;
   -moz-border-radius: 200px;
   -webkit-border-radius: 200px;
-  height: 60px;
+  height: 1rem;
   position: absolute;
   opacity: 0.2;
-  width: 60px;
+  width: 1rem;
 }
 
 .bubble:nth-child(1) {

@@ -1,4 +1,5 @@
 
+import BubbleManager from './bubbles';
 import Clock from './clock';
 import Collisions from './collisions';
 import keyboardInit from './keyboard';
@@ -26,6 +27,7 @@ function debugPlayer() {
 }
 
 keyboardInit(window);
+const bubbles = new BubbleManager();
 
 Clock.onConstantly(manager.update);
 Clock.onConstantly(debugPlayer);
