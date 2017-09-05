@@ -1,4 +1,45 @@
 
 body {
-  background: black;
+  background: #09101b;
+}
+
+.main {
+  margin: 10rem auto;
+  max-width: 800px;
+  position: relative;
+}
+
+.player {
+  background: url(dolphin3.svg);
+  background-size: 14rem;
+  background-repeat: no-repeat;
+  height: 7rem;
+  transform: rotate(0deg);
+  width: 4rem;
+}
+
+.bubble {
+  background: #155ba9;
+  border-radius: 200px;
+  -moz-border-radius: 200px;
+  -webkit-border-radius: 200px;
+  height: 60px;
+  position: absolute;
+  opacity: 0.2;
+  width: 60px;
+}
+
+.bubble:nth-child(1) {
+  left: 40%;
+  top: 25%;
+}
+
+.bubble:nth-child(2) {
+  left: 65%;
+  top: 35%;
+}
+
+.bubble:nth-child(3) {
+  left: 50%;
+  top: 80%;
 }
