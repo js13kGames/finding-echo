@@ -1,11 +1,9 @@
 
 import jsfxr from 'jsfxr';
-
 import EventEmitter from 'event-emitter-es6';
-import KeyboardInit from './keyboard';
-import Vector from './vector';
 
-const KEM = KeyboardInit(window);
+import Dispatcher from './dispatcher';
+import Vector from './vector';
 
 const sfxDolphin = [2,,0.1199,0.28,0.2837,0.68,0.05,,-0.92,0.8,0.4499,-0.4399,,,,0.6,-0.1599,-0.62,0.28,-0.5799,0.1,0.2399,-0.3799,0.5]
 const sfxBaby = [0,,0.1812,,0.1349,0.4524,,0.2365,,,,,,0.0819,,,,,1,,,,,0.5];
@@ -42,11 +40,14 @@ class Player extends EventEmitter {
     this.movement = new Vector(0, 0);
     this.angle = 0;
     this.isCollidable = true;
+    this.isPlayer = true;
 
     this.onKey = this.onKey.bind(this);
+    this.onEchoFound = this.onEchoFound.bind(this);
     this.on('collision', this.onCollision.bind(this));
     // TODO Figure out way to not have this dep
-    KEM.on('KEYDOWN', (ev) => this.onKey(ev.data));
+    Dispatcher.on('KEYDOWN', (ev) => this.onKey(ev.data));
+    this.on('ECHO_FOUND', (ev) => this.onEchoFound(ev.data));
   }
 
   onKey(keyData) {
@@ -63,10 +64,18 @@ class Player extends EventEmitter {
       case 'a':
         this.rotate(-90);
         break;
+      case 't':
+        console.log('player : emit echo');
+        Dispatcher.emitSync('ECHO');
+        break;
 
       default:
         break;
     }
+  }
+
+  onEchoFound(data) {
+    console.log('player : echo found', data);
   }
 
   move(x, y) {

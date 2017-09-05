@@ -1,8 +1,6 @@
 
-import KeyboardInit from './keyboard';
+import Dispatcher from './dispatcher';
 import Vector from './vector';
-
-const KEM = KeyboardInit(window);
 
 function intersectsWith(eA, eB) {
   const a = eA.points[0];
@@ -51,12 +49,12 @@ function getIntersectionPoint(eA, eB) {
 class Collisions {
   constructor(entities) {
     this.entities = entities;
-    KEM.on('KEYDOWN', (ev) => {
-      if (ev.data.keyName === 't') {
-        const closestWalls = this.checkRayCasting(40, 90);
-        console.log(this.findFacingWall(closestWalls, 40, 90, 180));
-      }
-    });
+    this.checkEcho = this.checkEcho.bind(this);
+    Dispatcher.on('ECHO', () => this.checkEcho());
+  }
+
+  update() {
+    this.checkCollisions();
   }
 
   checkCollisions() {
@@ -84,6 +82,32 @@ class Collisions {
       return true;
     }
     return false;
+  }
+
+  checkEcho() {
+    console.log('collision : on echo');
+    const player = this.entities.find((entity) => entity.isPlayer);
+    const walls = this.checkRayCasting(player.x, player.y);
+    const wall = this.findFacingWall(walls, player.x, player.y, player.angle);
+    if (wall) {
+      console.log('collision : echo found');
+      const distance = this.distanceFromCenter(player, wall);
+      player.emitSync('ECHO_FOUND', { data: { wall, distance } });
+    }
+  }
+
+  distanceFromCenter(entityA, entityB) {
+    const eACenter = new Vector(entityA.x + entityA.w / 2,
+                                entityA.y + entityA.h / 2)
+    const eBCenter = new Vector(entityB.x + entityB.w / 2,
+                                entityB.y + entityB.h / 2)
+    const distance = this.distance(eACenter, eBCenter);
+    return distance;
+  }
+
+  distance(pointA, pointB) {
+    return Math.sqrt(Math.pow(pointB.x -pointA.x, 2) +
+              Math.pow(pointB.y - pointA.y, 2));
   }
 
   checkRayCasting(cX, cY) {

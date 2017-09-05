@@ -1,6 +1,7 @@
 
 import Clock from './clock';
 import Collisions from './collisions';
+import keyboardInit from './keyboard';
 import manager from './manager';
 import Player from './player';
 import Wall from './wall';
@@ -23,6 +24,8 @@ const collisionManager = new Collisions(manager.entities);
 
 function debugPlayer() {
 }
+
+keyboardInit(window);
 
 Clock.onConstantly(manager.update);
 Clock.onConstantly(debugPlayer);

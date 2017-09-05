@@ -1,9 +1,9 @@
 
 import EventEmitter from 'event-emitter-es6';
+import Dispatcher from './dispatcher';
 
 
 function init(container) {
-  const EM = new EventEmitter();
   container.addEventListener('keydown', (event) => {
     const keyName = event.key;
 
@@ -12,10 +12,8 @@ function init(container) {
     }
 
     console.log(`KEY-${keyName}`);
-    EM.emit('KEYDOWN', { data: { keyName } });
+    Dispatcher.emit('KEYDOWN', { data: { keyName } });
   }, false);
-
-  return EM;
 }
 
 export default init;
