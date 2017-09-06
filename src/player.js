@@ -116,11 +116,13 @@ class Player extends EventEmitter {
     this.movement.y = y;
     console.log('movement', x, y, this.angle);
     console.log('movement', this.x, this.y);
+    Dispatcher.emit('MOVE', { data: { direction: new Vector(x, y) }});
   }
 
   stopMove() {
     this.movement.x = 0;
     this.movement.y = 0;
+    Dispatcher.emit('STOP');
   }
 
   orientMove(force) {

@@ -1,4 +1,5 @@
 
+import Dispatcher from './dispatcher';
 import Vector from './vector';
 
 class BubbleManager {
@@ -9,7 +10,7 @@ class BubbleManager {
     this.maxSize = 10;
     this.minPos = 0;
     this.maxPos = 50;
-    this.movement = new Vector(0.25, 0);
+    this.movement = new Vector(0, 0);
 
     for (let i = 0; i < this.numBubbles; i++) {
       let size = this.minSize + Math.floor(Math.random() * (this.maxSize + 1));
@@ -19,6 +20,10 @@ class BubbleManager {
       );
       this.initBubble(size, pos);
     }
+    this.move = this.move.bind(this);
+    this.stop = this.stop.bind(this);
+    Dispatcher.on('MOVE', (ev) => this.move(ev.data.direction));
+    Dispatcher.on('STOP', this.stop);
   }
 
   initBubble(size, pos) {
