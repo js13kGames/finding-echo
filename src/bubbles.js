@@ -48,7 +48,7 @@ class BubbleManager {
       this.bubbles.forEach((bubble) => {
         const curX = parseFloat(bubble.dataset.x, 10);
         const curY = parseFloat(bubble.dataset.y, 10);
-        let newX = curX + this.movement.x;
+        let newX = curX - this.movement.x;
         let newY = curY + this.movement.y;
         if (newX > this.maxPos) newX = this.minPos + 1;
         if (newX < this.minPos) newX = this.maxPos - 1;

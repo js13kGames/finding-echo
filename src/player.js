@@ -52,6 +52,8 @@ class Player extends EventEmitter {
     this.angle = 0;
     this.isCollidable = true;
     this.isPlayer = true;
+    this.el = document.getElementById('player');
+    this.freeze = false;
 
     this.onKey = this.onKey.bind(this);
     this.onKeyUp = this.onKeyUp.bind(this);
@@ -112,6 +114,7 @@ class Player extends EventEmitter {
   }
 
   move(x, y) {
+    if (this.freeze) return;
     this.movement.x = x;
     this.movement.y = y;
     console.log('movement', x, y, this.angle);
@@ -138,13 +141,18 @@ class Player extends EventEmitter {
   }
 
   rotate(angle) {
+    if (this.freeze) return;
     this.angle += angle;
     this.angle = this.angle % 360;
 
     if (this.angle < 0){
       this.angle += 360;
     }
-    console.log('rotate', this.angle);
+    this.rotateEl(this.angle);
+  }
+
+  rotateEl(angle) {
+    this.el.setAttribute('style', 'transform: rotate(' + angle +'deg);');
   }
 
   update() {
@@ -154,13 +162,21 @@ class Player extends EventEmitter {
   }
 
   onCollision(entityB) {
-    this.movement = new Vector(0, 0);
     if (entityB.orientation === 'h') {
-      this.y -= 10;
+      this.y -= 6;
     } else {
-      this.x -= 10;
+      this.x -= 6;
     }
+    this.freeze = true;
+    const backup = new Vector(-this.movement.x, -this.movement.y);
+    this.movement = backup;
+    Dispatcher.emit('MOVE', { data: { direction: backup }});
+    setTimeout(() => {
+      this.movement = new Vector(0, 0);
+      this.stopMove();
+    }, 600);
     console.log('collision', this.x, this.y);
+    setTimeout(() => { this.freeze = false; }, 1500);
   }
 }
 
