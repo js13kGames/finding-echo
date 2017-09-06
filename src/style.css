@@ -7,10 +7,10 @@ body {
 }
 
 .main {
-  margin: 10rem auto;
-  max-width: 800px;
+  height: 50rem;
+  margin: 5rem auto;
+  max-width: 50rem;
   position: relative;
-  top: calc(50vh - 200px);
 }
 
 .player {
@@ -32,22 +32,9 @@ body {
   -moz-border-radius: 200px;
   -webkit-border-radius: 200px;
   height: 1rem;
+  left: 0;
   position: absolute;
   opacity: 0.2;
+  top: 0;
   width: 1rem;
-}
-
-.bubble:nth-child(1) {
-  left: 40%;
-  top: 25%;
-}
-
-.bubble:nth-child(2) {
-  left: 65%;
-  top: 35%;
-}
-
-.bubble:nth-child(3) {
-  left: 50%;
-  top: 80%;
 }

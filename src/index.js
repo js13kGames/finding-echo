@@ -32,5 +32,6 @@ const bubbles = new BubbleManager();
 Clock.onConstantly(manager.update);
 Clock.onConstantly(debugPlayer);
 Clock.onConstantly(collisionManager.checkCollisions.bind(collisionManager));
+Clock.onEveryFrame(bubbles.update.bind(bubbles));
 Clock.onEveryFrame(manager.render);
 Clock.start();
