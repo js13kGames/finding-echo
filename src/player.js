@@ -54,6 +54,7 @@ class Player extends EventEmitter {
     this.isPlayer = true;
     this.el = document.getElementById('player');
     this.freeze = false;
+    this.health = 5;
 
     this.onKey = this.onKey.bind(this);
     this.onKeyUp = this.onKeyUp.bind(this);
@@ -161,6 +162,15 @@ class Player extends EventEmitter {
     panNode.setPosition(this.x / 10, this.y / 10, -0.5);
   }
 
+  injured() {
+    console.log('injury');
+    this.health -= 1;
+    Dispatcher.emitSync('INJURY', { data: { health: this.health }});
+    if (this.health === 0) {
+      this.health = 5;
+    }
+  }
+
   onCollision(entityB) {
     if (entityB.orientation === 'h') {
       this.y -= 6;
@@ -177,6 +187,8 @@ class Player extends EventEmitter {
     }, 600);
     console.log('collision', this.x, this.y);
     setTimeout(() => { this.freeze = false; }, 1500);
+
+    this.injured();
   }
 }
 

@@ -38,3 +38,19 @@ body {
   top: 0;
   width: 1rem;
 }
+
+#health {
+  left: 2rem;
+  top: 0;
+  position: absolute;
+}
+
+.healthDot {
+  background: #42b500;
+  border-radius: 200px;
+  -moz-border-radius: 200px;
+  -webkit-border-radius: 200px;
+  display: inline-block;
+  height: 1rem;
+  width: 1rem;
+}

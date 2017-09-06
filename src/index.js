@@ -5,6 +5,7 @@ import Collisions from './collisions';
 import keyboardInit from './keyboard';
 import manager from './manager';
 import Player from './player';
+import UI from './ui';
 import Wall from './wall';
 
 
@@ -28,6 +29,8 @@ function debugPlayer() {
 
 keyboardInit(window);
 const bubbles = new BubbleManager();
+
+UI();
 
 Clock.onConstantly(manager.update);
 Clock.onConstantly(debugPlayer);
