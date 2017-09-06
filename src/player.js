@@ -163,7 +163,6 @@ class Player extends EventEmitter {
   }
 
   injured() {
-    console.log('injury');
     this.health -= 1;
     Dispatcher.emitSync('INJURY', { data: { health: this.health }});
     if (this.health === 0) {
@@ -173,14 +172,22 @@ class Player extends EventEmitter {
 
   onCollision(entityB) {
     if (entityB.orientation === 'h') {
-      this.y -= 6;
+      if (this.angle === 180) {
+        this.y += 16;
+      } else {
+        this.y -= 6;
+      }
     } else {
-      this.x -= 6;
+      if (this.angle === 270) {
+        this.x += 16;
+      } else {
+        this.x -= 6;
+      }
     }
     this.freeze = true;
     const backup = new Vector(-this.movement.x, -this.movement.y);
     this.movement = backup;
-    Dispatcher.emit('MOVE', { data: { direction: backup }});
+    Dispatcher.emitSync('MOVE', { data: { direction: backup }});
     setTimeout(() => {
       this.movement = new Vector(0, 0);
       this.stopMove();
