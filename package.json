@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "mkdir -p ./dist && npm run clean && npm run build:img && npm run build:js && npm run compile && npm run build:html && npm run gzip",
-    "p:build": "npm run clean && npm run build:img && npm run build:js && npm run p:compile && npm run build:html && npm run gzip",
+    "p:build": "mkdir -p ./dist npm run clean && npm run build:img && npm run build:js && npm run p:compile && npm run build:html && npm run gzip",
     "build:js": "webpack",
     "build:html": "inline-assets dist/index.min.html > dist/index.html",
     "build:img": "cp src/img/* dist",
