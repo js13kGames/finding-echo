@@ -89,19 +89,21 @@ class Collisions {
     const walls = this.checkRayCasting(player.x, player.y);
     const wall = this.findFacingWall(walls, player.x, player.y, player.angle);
     if (wall) {
-      const distance = this.distanceFromCenter(player, wall);
-      console.log('echo', distance, wall);
+      const distance = this.distanceOriented(player, wall);
       player.emitSync('ECHO_FOUND', { data: { wall, distance } });
     }
   }
 
-  distanceFromCenter(entityA, entityB) {
-    const eACenter = new Vector(entityA.x + entityA.w / 2,
-                                entityA.y + entityA.h / 2)
-    const eBCenter = new Vector(entityB.x + entityB.w / 2,
-                                entityB.y + entityB.h / 2)
-    const distance = this.distance(eACenter, eBCenter);
-    return distance;
+  distanceOriented(player, wall) {
+    const wallPoint = new Vector(wall.x, wall.y);
+    const playerCenter = new Vector(player.x + player.w / 2,
+                                player.y + player.h / 2);
+    if (wall.orientation === 'v') {
+      wallPoint.y = playerCenter.y;
+    } else {
+      wallPoint.x = playerCenter.x;
+    }
+    return this.distance(playerCenter, wallPoint);
   }
 
   distance(pointA, pointB) {
