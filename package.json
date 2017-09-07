@@ -6,14 +6,17 @@
   "license": "MIT",
   "scripts": {
     "build": "npm run clean && npm run build:img && npm run build:js && npm run compile && npm run build:html && npm run gzip",
+    "p:build": "npm run clean && npm run build:img && npm run build:js && npm run p:compile && npm run build:html && npm run gzip",
     "build:js": "webpack",
     "build:html": "inline-assets dist/index.min.html > dist/index.html",
     "build:img": "cp src/img/* dist",
     "clean": "rm -rf dist/*",
     "compile": "npm run compile:js && npm run compile:css && npm run compile:html",
+    "p:compile": "npm run p:compile:js && npm run compile:css && npm run compile:html",
     "compile:js": "cp dist/index.js dist/index.min.js",
+    "p:compile:js": "./node_modules/uglify-es/bin/uglifyjs --compress -o dist/index.min.js -- dist/index.js",
     "compile:css": "uglifycss src/style.css > dist/style.css",
-    "compile:html": "html-minifier --minify-js 0 src/index.html > dist/index.min.html",
+    "compile:html": "html-minifier --minify-js false src/index.html > dist/index.min.html",
     "gzip": "gzip-all dist/*",
     "start": "http-server ./dist -g",
     "test": "[[ $(find ./dist/index.html.gz -type f -size +13000c 2>/dev/null) ]] && echo 'File too large' && exit 1 || exit 0"
