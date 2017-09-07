@@ -90,6 +90,7 @@ class Collisions {
     const wall = this.findFacingWall(walls, player.x, player.y, player.angle);
     if (wall) {
       const distance = this.distanceOriented(player, wall);
+      console.log('wall', wall, distance);
       player.emitSync('ECHO_FOUND', { data: { wall, distance } });
     }
   }
@@ -170,8 +171,8 @@ class Collisions {
     if (angle === 180) {
       closestWall = walls.find((wall) => wall.orientation === 'h' && wall.y >= cY);
     }
-    if (angle === 240) {
-      closestWall = walls.find((wall) => wall.orientation === 'v' && wall.y <= cX);
+    if (angle === 270) {
+      closestWall = walls.find((wall) => wall.orientation === 'v' && wall.x <= cX);
     }
 
     return closestWall;
