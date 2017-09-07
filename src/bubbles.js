@@ -61,8 +61,8 @@ class BubbleManager {
     }
   }
 
-  move(direction) {
-    this.movement = direction;
+  move(force) {
+    this.movement = force;
   }
 
   stop() {

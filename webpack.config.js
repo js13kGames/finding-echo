@@ -26,5 +26,5 @@ module.exports = {
   stats: {
     colors: true
   },
-  devtool: 'source-map'
+  devtool: PRODUCTION ? 'cheap-source-map' : 'source-map'
 };
