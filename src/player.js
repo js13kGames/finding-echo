@@ -72,13 +72,13 @@ class Player extends EventEmitter {
         this.orientMove(0.25);
         break;
       case 'd':
-        this.rotate(90);
+        this.rotate(-90);
         break;
       case 's':
         this.orientMove(-0.25);
         break;
       case 'a':
-        this.rotate(-90);
+        this.rotate(90);
         break;
       case 't':
         gainNode.gain.value = 1;
@@ -135,9 +135,9 @@ class Player extends EventEmitter {
     } else if (this.angle === 270) {
       this.move(-force, 0);
     } else if (this.angle === 180) {
-      this.move(0, -force);
-    } else if (this.angle === 0) {
       this.move(0, force);
+    } else if (this.angle === 0) {
+      this.move(0, -force);
     }
   }
 
@@ -153,7 +153,14 @@ class Player extends EventEmitter {
   }
 
   rotateEl(angle) {
-    this.el.setAttribute('style', 'transform: rotate(' + angle +'deg);');
+    let fixedAngle = angle;
+    if (angle === 0) {
+      fixedAngle = 180;
+    }
+    if (angle === 180) {
+      fixedAngle = 0;
+    }
+    this.el.setAttribute('style', 'transform: rotate(' + fixedAngle +'deg);');
   }
 
   update() {

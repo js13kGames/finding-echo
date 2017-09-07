@@ -90,6 +90,7 @@ class Collisions {
     const wall = this.findFacingWall(walls, player.x, player.y, player.angle);
     if (wall) {
       const distance = this.distanceFromCenter(player, wall);
+      console.log('echo', distance, wall);
       player.emitSync('ECHO_FOUND', { data: { wall, distance } });
     }
   }

@@ -21,7 +21,7 @@ body {
   left: calc(50% - 2rem);
   position: absolute;
   top: calc(50% - 3.5rem);
-  transform: rotate(0deg);
+  transform: rotate(180deg);
   width: 4rem;
 }
 
