@@ -9,6 +9,7 @@ const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 const sfxDolphin = [2,,0.1199,0.28,0.2837,0.68,0.05,,-0.92,0.8,0.4499,-0.4399,,,,0.6,-0.1599,-0.62,0.28,-0.5799,0.1,0.2399,-0.3799,0.5]
 const sfxBaby = [0,,0.1812,,0.1349,0.4524,,0.2365,,,,,,0.0819,,,,,1,,,,,0.5];
+const sfxSearch = [0,,0.1812,,0.1349,0.4524,,0.2365,,,,,,0.0819,,,,,1,,,,,0.6];
 
 const sfxDolphinURL = jsfxr(sfxDolphin);
 const dolphinAudio = new Audio();
@@ -24,21 +25,28 @@ gainNode.connect(audioCtx.destination);
 convolverGain.connect(convolver);
 
 
-const sfxBabyURL = jsfxr(sfxBaby);
-const audio = new Audio();
-audio.src = sfxBabyURL;
-audio.loop = true;
-audio.crossOrigin = "anonymous";
-const source = audioCtx.createMediaElementSource(audio);
+const searchAudioUrl = jsfxr(sfxSearch);
+const searchAudio = new Audio();
+searchAudio.src = searchAudioUrl;
+searchAudio.loop = false;
+searchAudio.crossOrigin = "anonymous";
+
+const babyAudioUrl = jsfxr(sfxBaby);
+const babyAudio = new Audio();
+babyAudio.src = babyAudioUrl;
+babyAudio.loop = false;
+babyAudio.crossOrigin = "anonymous";
+const babyAudioSource = audioCtx.createMediaElementSource(babyAudio);
 const panNode = audioCtx.createPanner();
 panNode.coneOuterGain = 0.4;
 panNode.coneOuterAngle = 240;
 panNode.coneInnerAngle = 0;
-panNode.refDistance = 20;
-source.connect(panNode);
+panNode.refDistance = 10;
+babyAudioSource.connect(panNode);
 panNode.connect(audioCtx.destination);
 audioCtx.listener.setPosition(0, 0, 0);
-panNode.setPosition(40, 40, -0.5);
+panNode.setPosition(0, 0, -0.4);
+
 
 
 class Player extends EventEmitter {
@@ -59,10 +67,12 @@ class Player extends EventEmitter {
     this.onKey = this.onKey.bind(this);
     this.onKeyUp = this.onKeyUp.bind(this);
     this.onEchoFound = this.onEchoFound.bind(this);
+    this.onCallBack = this.onCallBack.bind(this);
     this.on('collision', this.onCollision.bind(this));
     // TODO Figure out way to not have this dep
     Dispatcher.on('KEYDOWN', (ev) => this.onKey(ev.data));
     Dispatcher.on('KEYUP', (ev) => this.onKeyUp(ev.data));
+    Dispatcher.on('CALLBACK', (ev) => this.onCallBack(ev.data));
     this.on('ECHO_FOUND', (ev) => this.onEchoFound(ev.data));
   }
 
@@ -85,6 +95,10 @@ class Player extends EventEmitter {
         convolverGain.gain.value = 0;
         dolphinAudio.play();
         Dispatcher.emitSync('ECHO');
+        break;
+      case 'r':
+        searchAudio.play();
+        Dispatcher.emitSync('SEARCH', { data: { pos: new Vector(this.x, this.y) }});
         break;
 
       default:
@@ -166,7 +180,6 @@ class Player extends EventEmitter {
   update() {
     if (this.movement.x !== 0) this.x += this.movement.x;
     if (this.movement.y !== 0) this.y += this.movement.y;
-    panNode.setPosition(this.x / 10, this.y / 10, -0.5);
   }
 
   injured() {
@@ -203,6 +216,16 @@ class Player extends EventEmitter {
     setTimeout(() => { this.freeze = false; }, 1500);
 
     this.injured();
+  }
+
+  onCallBack(data) {
+    const pos = data.position;
+    console.log('panerd', pos.x, pos.y);
+    audioCtx.listener.setPosition(this.x, this.y, 0);
+    panNode.setPosition(pos.x, pos.y, 0);
+    setTimeout(() => {
+      babyAudio.play();
+    }, 500);
   }
 }
 

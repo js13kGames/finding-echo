@@ -5,11 +5,13 @@ import Collisions from './collisions';
 import keyboardInit from './keyboard';
 import manager from './manager';
 import Player from './player';
+import Prize from './prize';
 import UI from './ui';
 import Wall from './wall';
 
 
 const player = new Player(90, 90);
+const prize = new Prize(20, 20);
 const tW = new Wall(0, 0, 180, 2);
 const rW = new Wall(180, 0, 2, 180);
 const lW = new Wall(0, 0, 2, 180);
@@ -21,6 +23,7 @@ manager.addEntity(rW);
 manager.addEntity(lW);
 manager.addEntity(bW);
 manager.addEntity(player);
+manager.addEntity(prize);
 
 const collisionManager = new Collisions(manager.entities);
 
