@@ -4,7 +4,7 @@ const PRODUCTION = process.env.PRODUCTION;
 module.exports = {
   entry: './src/index.js',
   output: {
-    filename: 'dist/index.js'
+    filename: 'dist/index.unmin.js'
   },
   module: {
     loaders: [

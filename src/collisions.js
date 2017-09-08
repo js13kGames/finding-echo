@@ -178,4 +178,3 @@ class Collisions {
 
 
 export default Collisions;
-d                            serial#                                       .    If you can Please notify the owner of their property.  Located at lax police lost and found. Phone number is 424-646-5678 and their claim number is     .
