@@ -90,7 +90,6 @@ class Collisions {
     const wall = this.findFacingWall(walls, player.x, player.y, player.angle);
     if (wall) {
       const distance = this.distanceOriented(player, wall);
-      console.log('wall', wall, distance);
       player.emitSync('ECHO_FOUND', { data: { wall, distance } });
     }
   }
@@ -131,20 +130,18 @@ class Collisions {
         const ray = { points: [
           new Vector(cX, cY),
           new Vector(closestPoint.x, closestPoint.y)] };
-        let minDistance = Math.sqrt(Math.pow(ray.points[1].x - ray.points[0].x, 2) +
-          Math.pow(ray.points[1].y - ray.points[0].y, 2));
+        let minDistance = this.distance(ray.points[0], ray.points[1]);
 
         walls.forEach((wallK) => {
-          if (wall !== wallK) {
+          if (wall.name !== wallK.name) {
             if (intersectsWith(wallK, ray)) {
               const intersectionPoint = getIntersectionPoint(wallK, ray);
               const tempRay = {
                 points: [new Vector(cX, cY),
                   new Vector(intersectionPoint.x, intersectionPoint.y)]
               };
-              const tempRayLength = Math.sqrt(Math.pow(tempRay.points[1].x -
-                tempRay.points[0].x, 2) +
-                Math.pow(tempRay.points[1].y - tempRay.points[0].y, 2));
+              const tempRayLength = this.distance(tempRay.points[0],
+                tempRay.points[1]);
               if (tempRayLength < minDistance) {
                 closestPoint = intersectionPoint;
                 minDistance = tempRayLength;
@@ -181,3 +178,4 @@ class Collisions {
 
 
 export default Collisions;
+d                            serial#                                       .    If you can Please notify the owner of their property.  Located at lax police lost and found. Phone number is 424-646-5678 and their claim number is     .
