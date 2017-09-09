@@ -40,6 +40,9 @@ class StateManager {
     });
     manager.addEntity(player);
     manager.addEntity(prize);
+    function debug() {
+    }
+    Clock.onConstantly(debug);
     if (level === 0) Clock.start();
   }
 

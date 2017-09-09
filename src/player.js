@@ -199,15 +199,15 @@ class Player extends EventEmitter {
     if (entityB.isPrize) return this.onPrize();
     if (entityB.orientation === 'h') {
       if (this.angle === 180) {
-        this.y += 16;
+        this.y -= 16;
       } else {
-        this.y -= 6;
+        this.y += 16;
       }
     } else {
       if (this.angle === 270) {
         this.x += 16;
       } else {
-        this.x -= 6;
+        this.x -= 16;
       }
     }
     this.freeze = true;
