@@ -8,6 +8,8 @@ class Wall {
     this.y = y;
     this.w = w;
     this.h = h;
+    if (!h) {
+    }
     this.orientation = (w > h) ? 'h' : 'v';
     this.isWall = true;
     if (this.orientation === 'h') {
