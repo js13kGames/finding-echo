@@ -8,36 +8,14 @@ import Player from './player';
 import Prize from './prize';
 import UI from './ui';
 import Wall from './wall';
+import StateManager from './state_manager';
 
-
-const player = new Player(90, 90);
-const prize = new Prize(20, 20);
-const tW = new Wall(0, 0, 180, 2);
-const rW = new Wall(180, 0, 2, 180);
-const lW = new Wall(0, 0, 2, 180);
-const bW = new Wall(0, 180, 180, 2);
-
-
-manager.addEntity(tW);
-manager.addEntity(rW);
-manager.addEntity(lW);
-manager.addEntity(bW);
-manager.addEntity(player);
-manager.addEntity(prize);
-
-const collisionManager = new Collisions(manager.entities);
 
 function debugPlayer() {
 }
 
+
+const stateManager = new StateManager();
+console.log(stateManager);
 keyboardInit(window);
-const bubbles = new BubbleManager();
-
 UI();
-
-Clock.onConstantly(manager.update);
-Clock.onConstantly(debugPlayer);
-Clock.onConstantly(collisionManager.checkCollisions.bind(collisionManager));
-Clock.onEveryFrame(bubbles.update.bind(bubbles));
-Clock.onEveryFrame(manager.render);
-Clock.start();

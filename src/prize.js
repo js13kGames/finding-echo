@@ -1,13 +1,16 @@
 
+import EventEmitter from 'event-emitter-es6';
+
 import Dispatcher from './dispatcher';
 import Vector from './vector';
 
-class Prize {
+class Prize extends EventEmitter {
   constructor(x, y) {
+    super();
     this.x = x;
     this.y = y;
-    this.w = 10;
-    this.h = 10;
+    this.w = 20;
+    this.h = 20;
     this.isCollidable = true;
     this.isPrize = true;
 

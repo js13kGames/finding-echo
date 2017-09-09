@@ -1,9 +1,13 @@
 
-const entities = [];
+let entities = [];
 
 export default {
   addEntity(entity) {
     entities.push(entity);
+  },
+
+  removeEntities() {
+    entities.length = 0;
   },
 
   update() {

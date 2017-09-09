@@ -68,6 +68,7 @@ class Player extends EventEmitter {
     this.onKeyUp = this.onKeyUp.bind(this);
     this.onEchoFound = this.onEchoFound.bind(this);
     this.onCallBack = this.onCallBack.bind(this);
+    this.onPrize = this.onPrize.bind(this);
     this.on('collision', this.onCollision.bind(this));
     // TODO Figure out way to not have this dep
     Dispatcher.on('KEYDOWN', (ev) => this.onKey(ev.data));
@@ -186,11 +187,16 @@ class Player extends EventEmitter {
     this.health -= 1;
     Dispatcher.emitSync('INJURY', { data: { health: this.health }});
     if (this.health === 0) {
-      this.health = 5;
+      Dispatcher.emit('DEATH');
     }
   }
 
+  onPrize() {
+    Dispatcher.emit('PRIZE');
+  }
+
   onCollision(entityB) {
+    if (entityB.isPrize) return this.onPrize();
     if (entityB.orientation === 'h') {
       if (this.angle === 180) {
         this.y += 16;
