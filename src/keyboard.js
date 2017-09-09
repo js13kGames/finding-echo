@@ -10,6 +10,7 @@ function init(container) {
     if (keyName === 'Control') {
       return;
     }
+    console.log(keyName);
 
     Dispatcher.emit('KEYDOWN', { data: { keyName } });
   }, false);

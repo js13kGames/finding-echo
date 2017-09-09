@@ -91,13 +91,13 @@ class Player extends EventEmitter {
       case 'a':
         this.rotate(90);
         break;
-      case 't':
+      case ' ':
         gainNode.gain.value = 1;
         convolverGain.gain.value = 0;
         dolphinAudio.play();
         Dispatcher.emitSync('ECHO');
         break;
-      case 'r':
+      case 'f':
         searchAudio.play();
         Dispatcher.emitSync('SEARCH', { data: { pos: new Vector(this.x, this.y) }});
         break;
