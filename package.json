@@ -18,8 +18,9 @@
     "compile:css": "uglifycss src/style.css > dist/style.css",
     "compile:html": "html-minifier --minify-js false src/index.html > dist/index.min.html",
     "gzip": "gzip-all dist/index.html",
+    "zip": "zip ./dist/index.html.zip ./dist/index.html",
     "start": "http-server ./dist -g",
-    "test": "[[ $(find ./dist/index.html.gz -type f -size +13000c 2>/dev/null) ]] && echo 'File too large' && exit 1 || exit 0"
+    "test": "[[ $(find ./dist/index.html.zip -type f -size +13000c 2>/dev/null) ]] && echo 'File too large' && exit 1 || exit 0"
   },
   "dependencies": {
     "event-emitter-es6": "^1.1.5",
@@ -37,6 +38,7 @@
     "html-minifier": "^3.5.3",
     "http-server": "^0.10.0",
     "inline-assets": "^1.2.2",
+    "jszip-cli": "^1.4.24",
     "uglifycss": "^0.0.27",
     "webpack": "2"
   }
