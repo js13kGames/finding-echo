@@ -8,6 +8,7 @@ body {
   font-size: 1.2rem;
   font-weight: bold;
   line-height: 1.5;
+  overflow: hidden;
   position: relative;
 }
 
@@ -71,7 +72,7 @@ li + li {
   left: calc(50% - 2rem);
   position: absolute;
   top: calc(50% - 3.5rem);
-  transform: rotate(180deg);
+  transform: rotate(0deg);
   width: 4rem;
 }
 

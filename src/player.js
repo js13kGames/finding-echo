@@ -7,9 +7,9 @@ import Vector from './vector';
 
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-const sfxDolphin = [2,,0.1199,0.28,0.2837,0.68,0.05,,-0.92,0.8,0.4499,-0.4399,,,,0.6,-0.1599,-0.62,0.28,-0.5799,0.1,0.2399,-0.3799,0.5]
-const sfxBaby = [0,,0.1812,,0.1349,0.4524,,0.2365,,,,,,0.0819,,,,,1,,,,,0.5];
-const sfxSearch = [0,,0.1812,,0.1349,0.4524,,0.2365,,,,,,0.0819,,,,,1,,,,,0.6];
+const sfxDolphin = [2,0.16,0.19,0.27,0.17,0.35,0.31,0.3,0.24,0.37,0.41,0.72,0.22,0.87,-0.0239,0.61,-0.3,-0.54,0.84,-0.62,0.27,0.3,-0.6799,0.5]
+const sfxSearch = [1,0.45,0.75,0.44,0.56,0.38,0.34,0.4199,-0.56,0.24,0.39,0.58,0.41,,-0.0367,0.31,-0.78,-0.6599,0.32,-0.64,0.48,0.21,-0.58,0.7];
+const sfxBaby = [1,0.43,0.75,0.44,0.56,0.44,0.34,0.4199,-0.56,0.24,0.39,0.58,0.41,,-0.0367,0.31,-0.78,-0.6599,0.32,-0.64,0.48,0.21,-0.58,0.94];
 
 const sfxDolphinURL = jsfxr(sfxDolphin);
 const dolphinAudio = new Audio();
@@ -57,7 +57,7 @@ class Player extends EventEmitter {
     this.w = 4;
     this.h = 3;
     this.movement = new Vector(0, 0);
-    this.angle = 0;
+    this.angle = 180;
     this.isCollidable = true;
     this.isPlayer = true;
     this.el = document.getElementById('player');
