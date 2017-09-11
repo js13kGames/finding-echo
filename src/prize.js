@@ -9,8 +9,8 @@ class Prize extends EventEmitter {
     super();
     this.x = x;
     this.y = y;
-    this.w = 20;
-    this.h = 20;
+    this.w = 25;
+    this.h = 25;
     this.isCollidable = true;
     this.isPrize = true;
 

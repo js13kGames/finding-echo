@@ -3,7 +3,51 @@ body {
   background: #0c1940; /* Old browsers */
   background: -webkit-radial-gradient(center, ellipse cover, #0c1940 0%,#08011b 100%);
   background: radial-gradient(ellipse at center, #0c1940 0%,#08011b 100%);
+  color: white;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1.2rem;
+  line-height: 1.5;
   position: relative;
+}
+
+a {
+  color: white;
+}
+
+a:visited: {
+  color: white;
+}
+
+ul {
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+li + li {
+  margin-top: 0.4rem;
+}
+
+.modal {
+  max-width: 25rem;
+  position: absolute;
+  left: 2rem;
+  padding-top: 0.5rem;
+  top: 1rem;
+}
+
+.modal-close {
+  font-size: 1.75rem;
+  right: 0;
+  position: absolute;
+  text-decoration: none;
+  top: 0;
+}
+
+.hide {
+  display: none;
 }
 
 .main {

@@ -24,6 +24,15 @@ class StateManager {
     this.onDeath = this.onDeath.bind(this);
     Dispatcher.on('PRIZE', this.onPrize);
     Dispatcher.on('DEATH', this.onDeath);
+    this.openUI('modal-start');
+  }
+
+  openUI(id) {
+    const modal = document.getElementById(id);
+    modal.classList.remove('hide');
+    setTimeout(() => {
+      modal.classList.add('hide');
+    }, 5000);
   }
 
   changeLevel(level) {
@@ -47,15 +56,17 @@ class StateManager {
   }
 
   onDeath() {
+    this.openUI('modal-died');
     this.changeLevel(this.level);
   }
 
   onPrize() {
     this.level++;
     if (levels[this.level]) {
+      this.openUI('modal-next');
       this.changeLevel(this.level);
     } else {
-      console.log('thatis it');
+      this.openUI('modal-end');
       this.changeLevel(0);
     }
   }

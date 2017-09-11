@@ -17,6 +17,13 @@ function onInjury(data) {
 
 function init() {
   Dispatcher.on('INJURY', (ev) => { onInjury(ev.data) });
+  const modals = document.querySelectorAll('.modal');
+  modals.forEach((modal) => {
+    const close = modal.querySelector('.modal-close');
+    close.addEventListener('click', () => {
+      modal.classList.add('hide');
+    });
+  });
 }
 
 export default init;
