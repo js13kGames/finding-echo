@@ -2,6 +2,7 @@
 import Dispatcher from './dispatcher';
 
 function onInjury(data) {
+  document.body.classList.add('ouch');
   const health = data.health;
   const healthEls = document.querySelectorAll('.healthDot');
   healthEls.forEach((el) => {
@@ -13,6 +14,9 @@ function onInjury(data) {
       healthEls[i].setAttribute('style', 'visibility: hidden;');
     }
   }
+  setTimeout(() => {
+    document.body.classList.remove('ouch');
+  }, 1000);
 }
 
 function init() {
