@@ -7,9 +7,9 @@ import Vector from './vector';
 
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-const sfxDolphin = [2,0.16,0.19,0.27,0.17,0.35,0.31,0.3,0.24,0.37,0.41,0.72,0.22,0.87,-0.0239,0.61,-0.3,-0.54,0.84,-0.62,0.27,0.3,-0.6799,0.5]
-const sfxSearch = [1,0.45,0.75,0.44,0.56,0.38,0.34,0.4199,-0.56,0.24,0.39,0.58,0.41,,-0.0367,0.31,-0.78,-0.6599,0.32,-0.64,0.48,0.21,-0.58,0.7];
-const sfxBaby = [1,0.43,0.75,0.44,0.56,0.44,0.34,0.4199,-0.56,0.24,0.39,0.58,0.41,,-0.0367,0.31,-0.78,-0.6599,0.32,-0.64,0.48,0.21,-0.58,0.94];
+const sfxDolphin = [2,0.16,0.19,0.27,0.17,0.35,0.31,0.3,0.24,0.37,0.41,0.72,0.22,0.87,-0.0239,0.61,-0.3,-0.54,0.84,-0.62,0.27,0.3,-0.6799,0.3];
+const sfxSearch = [2,0.24,0.93,0.8,0.11,0.35,0.34,0.4199,-0.56,0.18,0.19,0.76,0.23,,-0.0367,0.19,-0.4599,-0.24,0.27,-0.4599,0.12,0.12,0.7,0.57];
+const sfxBaby = [2,0.24,0.93,0.8,0.11,0.4,0.34,0.4199,-0.56,0.18,0.19,0.76,0.23,,-0.0367,0.19,-0.4599,-0.24,0.27,-0.4599,0.12,0.12,0.7,1];
 
 const sfxDolphinURL = jsfxr(sfxDolphin);
 const dolphinAudio = new Audio();
@@ -41,7 +41,7 @@ const panNode = audioCtx.createPanner();
 panNode.coneOuterGain = 0.4;
 panNode.coneOuterAngle = 240;
 panNode.coneInnerAngle = 0;
-panNode.refDistance = 10;
+panNode.refDistance = 20;
 babyAudioSource.connect(panNode);
 panNode.connect(audioCtx.destination);
 audioCtx.listener.setPosition(0, 0, 0);
