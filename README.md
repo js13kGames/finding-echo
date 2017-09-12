@@ -16,3 +16,7 @@ The theme of the competition is **lost**. This game is about a dolphin finding h
 ### Technology
 
 Uses es6 code compiled to chrome and firefox with [babel](https://babeljs.io/), modular JS code with [webpack](https://webpack.github.io/), JS code minified with [uglifyes](https://www.npmjs.com/package/uglify-es), CSS code minified with [uglifycss](https://www.npmjs.com/package/uglifycss), and HTML compiled with [html-minifier](https://kangax.github.io/html-minifier/).
+
+### Screenshot
+
+![screenshot](https://github.com/msecret/finding-echo/blob/master/resources/screenshots/dolphin.png)
