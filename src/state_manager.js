@@ -24,7 +24,6 @@ class StateManager {
     this.onDeath = this.onDeath.bind(this);
     Dispatcher.on('PRIZE', this.onPrize);
     Dispatcher.on('DEATH', this.onDeath);
-    this.openUI('modal-start');
   }
 
   openUI(id) {
@@ -32,7 +31,7 @@ class StateManager {
     modal.classList.remove('hide');
     setTimeout(() => {
       modal.classList.add('hide');
-    }, 5000);
+    }, 4000);
   }
 
   changeLevel(level) {
@@ -58,7 +57,7 @@ class StateManager {
     if (level === 0) Clock.start();
     setTimeout(() => {
       player.freeze = false;
-    }, 2000);
+    }, 3000);
   }
 
   onDeath() {
