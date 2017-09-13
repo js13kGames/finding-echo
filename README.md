@@ -4,7 +4,7 @@
 
 A small, quick game for [js13k competition](http://2017.js13kgames.com/).
 
-The theme of the competition is **lost**. This game is about a dolphin finding his lost dolphin friend in a dark ocean cave, with only echo location. To make this process a little easier for humans, the speed of sound is slowed down, so you can tell how close your are to a wall by the amount of time that passes by before the echo sound returns.
+The theme of the competition is **lost**. This game is about a dolphin finding his lost dolphin friend in a dark ocean cave, with only echo location. To make this process a little easier for humans, the speed of sound is slowed down, so you can tell how close your are to a wall by the amount of time that passes by before the echo sound returns. The dolphin can also cry out to his friend, who will respond, and you can use the location and strength of the sound to tell how far away the friend dolphin is.
 
 ### Controls
 
