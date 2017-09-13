@@ -57,7 +57,7 @@ class StateManager {
     if (level === 0) Clock.start();
     setTimeout(() => {
       player.freeze = false;
-    }, 3000);
+    }, 2500);
   }
 
   onDeath() {
