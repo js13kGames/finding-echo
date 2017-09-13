@@ -133,7 +133,6 @@ class Player extends EventEmitter {
     if (this.freeze) return;
     this.movement.x = x;
     this.movement.y = y;
-    console.log('movement', x, y, this.angle);
     console.log('movement', this.x, this.y);
     Dispatcher.emit('MOVE', { data: { direction: new Vector(x, y) }});
   }
@@ -193,6 +192,8 @@ class Player extends EventEmitter {
 
   onPrize() {
     Dispatcher.emit('PRIZE');
+    this.x -= 16;
+    this.y -= 16;
   }
 
   onCollision(entityB) {
@@ -226,7 +227,6 @@ class Player extends EventEmitter {
 
   onCallBack(data) {
     const pos = data.position;
-    console.log('panerd', pos.x, pos.y);
     audioCtx.listener.setPosition(this.x, this.y, 0);
     panNode.setPosition(pos.x, pos.y, 0);
     setTimeout(() => {

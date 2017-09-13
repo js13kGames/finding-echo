@@ -37,10 +37,12 @@ class StateManager {
 
   changeLevel(level) {
     const l = levels[level];
+    console.log('changeLevel', l);
 
     manager.removeEntities();
 
     const player = new Player(l.playerX, l.playerY);
+    player.freeze = true;
     const prize = new Prize(l.prizeX, l.prizeY);
     const walls = l.walls.map((dwall) => {
       const wall = new Wall(dwall.x, dwall.y, dwall.w, dwall.h)
@@ -50,9 +52,13 @@ class StateManager {
     manager.addEntity(player);
     manager.addEntity(prize);
     function debug() {
+
     }
     Clock.onConstantly(debug);
     if (level === 0) Clock.start();
+    setTimeout(() => {
+      player.freeze = false;
+    }, 2000);
   }
 
   onDeath() {
