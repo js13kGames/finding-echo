@@ -27,7 +27,7 @@ export default [
   {
     playerX: 20,
     playerY: 100,
-    prizeX: 100,
+    prizeX: 85,
     prizeY: 20,
     walls: [
       { x: 0, y: 0, w: 119, h: 1 },
